@@ -18,22 +18,30 @@ public class UserController {
         }
         return userListWrapper;
     }
-    
+
     public UserWrapper findUserByNick(String userNick) {
-        User user= DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
-        if (user!=null){
+        User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
+        if (user != null) {
             return new UserWrapper(user.getId(), user.getNick(), user.getEmail());
-        }else{
+        } else {
             return null;
         }
-           
+    }
+
+    public boolean userPracticesSport(String userNick, String sportName) {
+        User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
+        if (user.hasSport(sportName)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void createUser(String userNick, String userEmail) {
-        if (DaoFactory.getFactory().getUserDao().findUserByNick(userNick)!=null){
-        }else{
+        if (DaoFactory.getFactory().getUserDao().findUserByNick(userNick) != null) {
+        } else {
             DaoFactory.getFactory().getUserDao().create(new User(userNick, userEmail));
-        }     
+        }
     }
 
     public UserListWrapper findUserBySportName(String sportName) {
@@ -49,7 +57,7 @@ public class UserController {
 
     public UserWrapper addUserSport(String userNick, String sportName) {
         User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
-        if (user!=null){
+        if (user != null) {
             user.addSport(new Sport(sportName));
             DaoFactory.getFactory().getUserDao().update(user);
         }

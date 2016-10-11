@@ -4,6 +4,7 @@ import es.upm.miw.apaw.p2.sport.controllers.SportController;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidSportNameException;
 import es.upm.miw.apaw.p2.sport.exceptions.NotFoundSportNameException;
 import es.upm.miw.apaw.p2.sport.wrappers.SportListWrapper;
+import es.upm.miw.apaw.p2.sport.wrappers.SportWrapper;
 
 public class SportResource {
 
@@ -18,6 +19,10 @@ public class SportResource {
     // GET **/votes
     public SportListWrapper sportList() {
         return new SportController().sportList();
+    }
+    
+    public SportWrapper findSportByName(String sportName) {
+        return new SportController().findSportByName(sportName);
     }
     
     
