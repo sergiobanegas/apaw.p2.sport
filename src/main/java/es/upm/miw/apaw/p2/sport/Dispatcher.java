@@ -54,11 +54,10 @@ public class Dispatcher {
         case "sports":
             try {
                 sportResource.createSport(request.getBody());
-                response.setStatus(HttpStatus.CREATED);
-
             } catch (Exception e) {
                 responseError(response, e);
             }
+            response.setStatus(HttpStatus.CREATED);
             break;
         default:
             responseError(response, new InvalidRequestException(request.getPath()));
@@ -78,7 +77,6 @@ public class Dispatcher {
                     } catch (Exception e) {
                         responseError(response, e);
                     }
-                    response.setStatus(HttpStatus.OK);
                 } else {
                     responseError(response, new InvalidRequestException(request.getPath()));
                 }
