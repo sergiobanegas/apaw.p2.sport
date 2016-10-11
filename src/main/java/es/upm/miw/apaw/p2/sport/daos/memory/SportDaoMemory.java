@@ -20,7 +20,6 @@ public class SportDaoMemory extends GenericMemoryDao<Sport> implements SportDao 
     @Override
     protected void setId(Sport entity, Integer id) {
         entity.setId(id);
-
     }
 
     @Override

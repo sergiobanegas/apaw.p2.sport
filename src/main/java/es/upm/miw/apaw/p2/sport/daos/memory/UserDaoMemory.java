@@ -7,7 +7,7 @@ import java.util.List;
 import es.upm.miw.apaw.p2.sport.daos.UserDao;
 import es.upm.miw.apaw.p2.sport.entities.User;
 
-public class UserDaoMemory extends GenericMemoryDao<User>implements UserDao {
+public class UserDaoMemory extends GenericMemoryDao<User> implements UserDao {
 
     public UserDaoMemory() {
         this.setMap(new HashMap<Integer, User>());
@@ -28,14 +28,14 @@ public class UserDaoMemory extends GenericMemoryDao<User>implements UserDao {
         List<User> users = this.findAll();
         for (User user : users) {
             if (user.getNick().equals(userNick)) {
-               return user;
+                return user;
             }
         }
         return null;
     }
-    
+
     @Override
-    public List<User> findUserBySportName(String sportName) {
+    public List<User> findUsersBySportName(String sportName) {
         List<User> users = this.findAll();
         List<User> usersResult = new ArrayList<>();
         for (User user : users) {

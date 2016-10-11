@@ -6,7 +6,7 @@ public class SportNameExistsException extends Exception {
 	public static final String DESCRIPTION = "Ya existe un deporte con el nombre ";
 
 	public SportNameExistsException(String detail) {
-		super(DESCRIPTION + ": " + detail);
+		super(DESCRIPTION + "'" + detail+"'");
 	}
 
 	public SportNameExistsException() {

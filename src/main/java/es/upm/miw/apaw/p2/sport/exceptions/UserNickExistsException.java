@@ -6,7 +6,7 @@ public class UserNickExistsException extends Exception {
 	public static final String DESCRIPTION = "Ya existe un usuario con el nick ";
 
 	public UserNickExistsException(String detail) {
-		super(DESCRIPTION + ": " + detail);
+		super(DESCRIPTION + "'" + detail+"'");
 	}
 
 	public UserNickExistsException() {
