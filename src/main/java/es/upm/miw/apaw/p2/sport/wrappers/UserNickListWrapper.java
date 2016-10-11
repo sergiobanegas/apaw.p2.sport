@@ -3,19 +3,19 @@ package es.upm.miw.apaw.p2.sport.wrappers;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserListWrapper {
-	List<UserWrapper> userList;
+public class UserNickListWrapper {
+	List<UserNickWrapper> userList;
 
 	
-	public UserListWrapper() {
+	public UserNickListWrapper() {
 	    userList = new ArrayList<>();
 	}
 
-	public List<UserWrapper> getUserList() {
+	public List<UserNickWrapper> getUserList() {
 		return userList;
 	}
 
-	public void addUserWrapper(UserWrapper userWrapper){
+	public void addUserNickWrapper(UserNickWrapper userWrapper){
 	    userList.add(userWrapper);
 	}
 	
@@ -23,7 +23,7 @@ public class UserListWrapper {
 	@Override
 	public String toString() {
 		String result = "{\"userList\":[ ";
-		for (UserWrapper userWrapper : userList) {
+		for (UserNickWrapper userWrapper : userList) {
 			result += userWrapper.toString() + ",";
 		}
 		return result.substring(0, result.length() - 1) + "]}";

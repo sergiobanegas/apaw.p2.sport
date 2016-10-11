@@ -5,13 +5,14 @@ import es.upm.miw.apaw.p2.sport.controllers.UserController;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
 import es.upm.miw.apaw.p2.sport.exceptions.NotFoundSportNameException;
 import es.upm.miw.apaw.p2.sport.exceptions.SportNameUserExistsException;
-import es.upm.miw.apaw.p2.sport.wrappers.UserListWrapper;
+import es.upm.miw.apaw.p2.sport.wrappers.UserNickEmailListWrapper;
+import es.upm.miw.apaw.p2.sport.wrappers.UserNickListWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserWrapper;
 
 public class UserResource {
 
     // GET **/themes
-    public UserListWrapper userList() {
+    public UserNickEmailListWrapper userList() {
         return new UserController().userList();
     }
 
@@ -29,10 +30,10 @@ public class UserResource {
     }
 
     // GET **themes/{id}/overage
-    public UserListWrapper findUserBySportName(String sportName) throws NotFoundSportNameException {
-        UserListWrapper userListWrapper = new UserController().findUserBySportName(sportName);
-        if (userListWrapper != null) {
-            return userListWrapper;
+    public UserNickListWrapper findUserBySportName(String sportName) throws NotFoundSportNameException {
+        UserNickListWrapper usernickListWrapper = new UserController().findUserBySportName(sportName);
+        if (usernickListWrapper != null) {
+            return usernickListWrapper;
         } else {
             throw new NotFoundSportNameException("" + sportName);
         }
