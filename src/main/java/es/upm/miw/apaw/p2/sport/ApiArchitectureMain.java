@@ -33,6 +33,7 @@ public class ApiArchitectureMain {
         request.setBody("uno:dos@gmail.com");
         request();
 
+        request.setBody(null);
         request.setMethod(HttpMethod.GET);
         request.setPath("users");
         request.clearQueryParams();
@@ -57,6 +58,7 @@ public class ApiArchitectureMain {
         request.setBody("ajedrez");
         request();
 
+        request.setBody(null);
         request.setMethod(HttpMethod.GET);
         request.setPath("users/search");
         request.addQueryParam("sport", "tenis");
