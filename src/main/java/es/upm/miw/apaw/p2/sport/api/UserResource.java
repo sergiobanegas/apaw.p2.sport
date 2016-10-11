@@ -35,19 +35,14 @@ public class UserResource {
 
     public UserWrapper addUserSport(String userNick, String sportName)
             throws SportNameUserExistsException, NotFoundSportNameException, NotFoundUserNickException {
-        if (new SportController().findSportByName(sportName) != null) {
-            if (new UserController().findUserByNick(userNick) != null) {
-                if (!new UserController().userPracticesSport(userNick, sportName)) {
-                    return new UserController().addUserSport(userNick, sportName);
-                } else {
-                    throw new SportNameUserExistsException("" + userNick, sportName);
-                }
-            } else {
-                throw new NotFoundUserNickException("" + userNick);
-            }
-
-        } else {
+        if (new SportController().findSportByName(sportName) == null) {
             throw new NotFoundSportNameException("" + sportName);
+        } else if (new UserController().findUserByNick(userNick) == null) {
+            throw new NotFoundUserNickException("" + userNick);
+        } else if (new UserController().userPracticesSport(userNick, sportName)) {
+            throw new SportNameUserExistsException("" + userNick, sportName);
+        } else {
+            return new UserController().addUserSport(userNick, sportName);
         }
     }
 

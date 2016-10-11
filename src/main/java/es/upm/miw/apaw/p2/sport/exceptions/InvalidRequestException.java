@@ -1,15 +1,16 @@
 package es.upm.miw.apaw.p2.sport.exceptions;
 
 public class InvalidRequestException extends Exception {
-	private static final long serialVersionUID = -642045799876625537L;
-	public static final String DESCRIPTION = "Petición no implementada";
+    private static final long serialVersionUID = -642045799876625537L;
 
-	public InvalidRequestException(String detail) {
-		super(DESCRIPTION + ". " + detail);
-	}
+    public static final String DESCRIPTION = "Petición no implementada";
 
-	public InvalidRequestException() {
-		this("");
-	}
+    public InvalidRequestException(String detail) {
+        super(DESCRIPTION + ". " + detail);
+    }
+
+    public InvalidRequestException() {
+        this("");
+    }
 
 }

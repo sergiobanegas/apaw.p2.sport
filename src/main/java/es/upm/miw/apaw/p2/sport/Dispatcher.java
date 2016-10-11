@@ -4,7 +4,6 @@ import es.upm.miw.apaw.p2.sport.api.SportResource;
 import es.upm.miw.apaw.p2.sport.api.UserResource;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidRequestException;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
-import es.upm.miw.apaw.p2.sport.exceptions.VoidParameterException;
 import es.upm.miw.apaw.p2.sport.web.http.HttpRequest;
 import es.upm.miw.apaw.p2.sport.web.http.HttpResponse;
 import es.upm.miw.apaw.p2.sport.web.http.HttpStatus;
@@ -24,14 +23,10 @@ public class Dispatcher {
         if ("users".equals(request.getPath())) {
             response.setBody(userResource.userList().toString());
         } else if ("users".equals(request.paths()[0]) && "search".equals(request.paths()[1])) {
-            if (request.getParams().containsKey("sport") && request.getParams().get("sport") != null) {
-                try {
-                    response.setBody(userResource.findUserBySportName(request.getParams().get("sport")).toString());
-                } catch (Exception e) {
-                    responseError(response, e);
-                }
-            } else {
-                responseError(response, new VoidParameterException("sport"));
+            try {
+                response.setBody(userResource.findUserBySportName(request.getParams().get("sport")).toString());
+            } catch (Exception e) {
+                responseError(response, e);
             }
         } else if ("sports".equals(request.getPath())) {
             response.setBody(sportResource.sportList().toString());
@@ -43,7 +38,7 @@ public class Dispatcher {
     public void doPost(HttpRequest request, HttpResponse response) {
         switch (request.getPath()) {
         case "users":
-            if (request.getBody().split(":").length==2){
+            if (request.getBody().split(":").length == 2) {
                 String userNick = request.getBody().split(":")[0];
                 String userEmail = request.getBody().split(":")[1];
                 try {
@@ -52,10 +47,9 @@ public class Dispatcher {
                     responseError(response, e);
                 }
                 response.setStatus(HttpStatus.CREATED);
-            }else{
+            } else {
                 responseError(response, new InvalidUserFieldException(request.getBody()));
             }
-            
             break;
         case "sports":
             try {
