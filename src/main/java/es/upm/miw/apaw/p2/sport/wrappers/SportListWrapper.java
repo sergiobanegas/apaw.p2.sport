@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SportListWrapper {
-	List<SportWrapper> sportList = new ArrayList<>();
+    List<SportWrapper> sportList = new ArrayList<>();
 
-	public SportListWrapper() {
-	}
-	
-	public List<SportWrapper> getSportList() {
-		return sportList;
-	}
+    public SportListWrapper() {
+    }
 
-	public void addSportWrapper(SportWrapper sportWrapper) {
-	    sportList.add(sportWrapper);
-	}
+    public List<SportWrapper> getSportList() {
+        return sportList;
+    }
 
-	@Override
-	public String toString() {
-		String result = "{\"sportList\":[ ";
-		for (SportWrapper sportWrapper : sportList) {
-			result += sportWrapper.toString() + ",";
-		}
-		return result.substring(0, result.length() - 1) + "]}";
-	}
+    public void addSportWrapper(SportWrapper sportWrapper) {
+        sportList.add(sportWrapper);
+    }
+
+    @Override
+    public String toString() {
+        String result = "{\"sportList\":[ ";
+        for (SportWrapper sportWrapper : sportList) {
+            result += sportWrapper.toString() + ",";
+        }
+        return result.substring(0, result.length() - 1) + "]}";
+    }
 
 }

@@ -14,13 +14,13 @@ public class User {
     private List<Sport> sports;
 
     public User() {
-        // TODO Auto-generated constructor stub
+
     }
 
     public User(String nick, String email) {
         this.nick = nick;
         this.email = email;
-        this.sports=new ArrayList<Sport>();
+        this.sports = new ArrayList<Sport>();
     }
 
     public void addSport(Sport sport) {
