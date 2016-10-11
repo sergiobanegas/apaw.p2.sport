@@ -5,6 +5,7 @@ import es.upm.miw.apaw.p2.sport.controllers.UserController;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
 import es.upm.miw.apaw.p2.sport.exceptions.NotFoundSportNameException;
 import es.upm.miw.apaw.p2.sport.exceptions.SportNameUserExistsException;
+import es.upm.miw.apaw.p2.sport.exceptions.UserNickExistsException;
 import es.upm.miw.apaw.p2.sport.wrappers.UserNickEmailListWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserNickListWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserWrapper;
@@ -17,10 +18,15 @@ public class UserResource {
     }
 
     // POST **/themes body="themeName"
-    public void createUser(String userNick, String userEmail) throws InvalidUserFieldException {
+    public void createUser(String userNick, String userEmail) throws InvalidUserFieldException, UserNickExistsException {
         this.validateField(userNick);
         this.validateField(userEmail);
-        new UserController().createUser(userNick, userEmail);
+        if (new UserController().findUserByNick(userNick)==null){
+            new UserController().createUser(userNick, userEmail);
+        }else{
+            throw new UserNickExistsException(userNick);
+        }
+        
     }
 
     private void validateField(String field) throws InvalidUserFieldException {
@@ -37,10 +43,6 @@ public class UserResource {
         } else {
             throw new NotFoundSportNameException("" + sportName);
         }
-    }
-
-    public UserWrapper findUserByNick(String userNick) {
-        return new UserController().findUserByNick(userNick);
     }
 
     public UserWrapper addUserSport(String userNick, String sportName) throws SportNameUserExistsException, NotFoundSportNameException {
