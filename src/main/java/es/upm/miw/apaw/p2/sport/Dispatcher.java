@@ -3,6 +3,7 @@ package es.upm.miw.apaw.p2.sport;
 import es.upm.miw.apaw.p2.sport.api.SportResource;
 import es.upm.miw.apaw.p2.sport.api.UserResource;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidRequestException;
+import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
 import es.upm.miw.apaw.p2.sport.exceptions.VoidParameterException;
 import es.upm.miw.apaw.p2.sport.web.http.HttpRequest;
 import es.upm.miw.apaw.p2.sport.web.http.HttpResponse;
@@ -42,14 +43,19 @@ public class Dispatcher {
     public void doPost(HttpRequest request, HttpResponse response) {
         switch (request.getPath()) {
         case "users":
-            String userNick = request.getBody().split(":")[0];
-            String userEmail = request.getBody().split(":")[1];
-            try {
-                userResource.createUser(userNick, userEmail);
-            } catch (Exception e) {
-                responseError(response, e);
+            if (request.getBody().split(":").length==2){
+                String userNick = request.getBody().split(":")[0];
+                String userEmail = request.getBody().split(":")[1];
+                try {
+                    userResource.createUser(userNick, userEmail);
+                } catch (Exception e) {
+                    responseError(response, e);
+                }
+                response.setStatus(HttpStatus.CREATED);
+            }else{
+                responseError(response, new InvalidUserFieldException(request.getBody()));
             }
-            response.setStatus(HttpStatus.CREATED);
+            
             break;
         case "sports":
             try {

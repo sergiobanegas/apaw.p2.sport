@@ -2,7 +2,6 @@ package es.upm.miw.apaw.p2.sport.api;
 
 import es.upm.miw.apaw.p2.sport.controllers.SportController;
 import es.upm.miw.apaw.p2.sport.controllers.UserController;
-import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
 import es.upm.miw.apaw.p2.sport.exceptions.NotFoundSportNameException;
 import es.upm.miw.apaw.p2.sport.exceptions.NotFoundUserNickException;
 import es.upm.miw.apaw.p2.sport.exceptions.SportNameUserExistsException;
@@ -17,21 +16,13 @@ public class UserResource {
         return new UserController().userList();
     }
 
-    public void createUser(String userNick, String userEmail) throws InvalidUserFieldException, UserNickExistsException {
-        this.validateField(userNick);
-        this.validateField(userEmail);
+    public void createUser(String userNick, String userEmail) throws UserNickExistsException {
         if (new UserController().findUserByNick(userNick) == null) {
             new UserController().createUser(userNick, userEmail);
         } else {
             throw new UserNickExistsException(userNick);
         }
 
-    }
-
-    private void validateField(String field) throws InvalidUserFieldException {
-        if (field == null || field.isEmpty()) {
-            throw new InvalidUserFieldException(field);
-        }
     }
 
     public UserNickListWrapper findUserBySportName(String sportName) throws NotFoundSportNameException {
