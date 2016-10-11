@@ -4,7 +4,9 @@ import es.upm.miw.apaw.p2.sport.api.SportResource;
 import es.upm.miw.apaw.p2.sport.api.UserResource;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidRequestException;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidUserFieldException;
-import es.upm.miw.apaw.p2.sport.exceptions.NotFoundUserNickException;
+import es.upm.miw.apaw.p2.sport.exceptions.SportNameExistsException;
+import es.upm.miw.apaw.p2.sport.exceptions.UserNickExistsException;
+import es.upm.miw.apaw.p2.sport.exceptions.VoidParameterException;
 import es.upm.miw.apaw.p2.sport.web.http.HttpRequest;
 import es.upm.miw.apaw.p2.sport.web.http.HttpResponse;
 import es.upm.miw.apaw.p2.sport.web.http.HttpStatus;
@@ -21,7 +23,7 @@ public class Dispatcher {
     }
 
     public void doGet(HttpRequest request, HttpResponse response) {
-        // **/themes
+        // **/users
         if ("users".equals(request.getPath())) {
             response.setBody(userResource.userList().toString());
         } else if ("users".equals(request.paths()[0]) && "search".equals(request.paths()[1])) {
@@ -32,10 +34,10 @@ public class Dispatcher {
                     responseError(response, e);
                 }
             } else {
-                System.out.println("ERROR: NECESITA QUERYS");
+                responseError(response, new VoidParameterException("sport"));
             }
 
-            // **/votes
+            // **/sports
         } else if ("sports".equals(request.getPath())) {
             response.setBody(sportResource.sportList().toString());
         } else {
@@ -51,14 +53,12 @@ public class Dispatcher {
             String userNick = request.getBody().split(":")[0];
             String userEmail = request.getBody().split(":")[1];
             try {
-                if (userResource.findUserByNick(userNick)==null){
+                if (userResource.findUserByNick(userNick) == null) {
                     userResource.createUser(userNick, userEmail);
                     response.setStatus(HttpStatus.CREATED);
-                }else{
-                    responseError(response, new NotFoundUserNickException(userNick));
+                } else {
+                    responseError(response, new UserNickExistsException(userNick));
                 }
-                
-                
             } catch (InvalidUserFieldException e) {
                 this.responseError(response, e);
             }
@@ -66,8 +66,13 @@ public class Dispatcher {
         // POST sports body="sportName"
         case "sports":
             try {
-                sportResource.createSport(request.getBody());
-                response.setStatus(HttpStatus.CREATED);
+                if (sportResource.findSportByName(request.getBody()) == null) {
+                    sportResource.createSport(request.getBody());
+                    response.setStatus(HttpStatus.CREATED);
+                } else {
+                    responseError(response, new SportNameExistsException(request.getBody()));
+                }
+
             } catch (Exception e) {
                 responseError(response, e);
             }
@@ -86,10 +91,14 @@ public class Dispatcher {
             switch (request.paths()[0]) {
             case "users":
                 if ("sport".equals(request.paths()[2])) {
-                    userResource.addUserSport(request.paths()[1], request.getBody());
+                    try {
+                        userResource.addUserSport(request.paths()[1], request.getBody());
+                    } catch (Exception e) {
+                        responseError(response, e);
+                    }
                     response.setStatus(HttpStatus.OK);
                 } else {
-                    System.out.println("ERROR");
+                    responseError(response, new VoidParameterException("sport"));
                 }
                 break;
             default:
