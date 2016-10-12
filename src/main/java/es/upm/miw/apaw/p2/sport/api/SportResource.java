@@ -4,13 +4,14 @@ import es.upm.miw.apaw.p2.sport.controllers.SportController;
 import es.upm.miw.apaw.p2.sport.exceptions.InvalidSportFieldException;
 import es.upm.miw.apaw.p2.sport.exceptions.SportNameExistsException;
 import es.upm.miw.apaw.p2.sport.wrappers.SportListWrapper;
+import es.upm.miw.apaw.p2.sport.wrappers.SportWrapper;
 
 public class SportResource {
 
-    public void createSport(String sportName) throws SportNameExistsException, InvalidSportFieldException {
+    public SportWrapper createSport(String sportName) throws SportNameExistsException, InvalidSportFieldException {
         this.validateField(sportName);
         if (new SportController().findSportByName(sportName) == null) {
-            new SportController().createSport(sportName);
+            return new SportController().createSport(sportName);
         } else {
             throw new SportNameExistsException("" + sportName);
         }

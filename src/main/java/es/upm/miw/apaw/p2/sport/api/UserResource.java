@@ -16,9 +16,9 @@ public class UserResource {
         return new UserController().userList();
     }
 
-    public void createUser(String userNick, String userEmail) throws UserNickExistsException {
+    public UserWrapper createUser(String userNick, String userEmail) throws UserNickExistsException {
         if (new UserController().findUserByNick(userNick) == null) {
-            new UserController().createUser(userNick, userEmail);
+            return new UserController().createUser(userNick, userEmail);
         } else {
             throw new UserNickExistsException(userNick);
         }

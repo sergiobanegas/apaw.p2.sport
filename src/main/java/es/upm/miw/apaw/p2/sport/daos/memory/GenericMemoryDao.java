@@ -15,9 +15,10 @@ public abstract class GenericMemoryDao<T> implements GenericDao<T, Integer> {
     }
 
     @Override
-    public void create(T entity) {
+    public T create(T entity) {
         map.put(map.size() + 1, entity);
         this.setId(entity, map.size());
+        return entity;
     }
 
     @Override
@@ -26,10 +27,11 @@ public abstract class GenericMemoryDao<T> implements GenericDao<T, Integer> {
     }
 
     @Override
-    public void update(T entity) {
+    public T update(T entity) {
         if (map.containsKey(this.getId(entity))) {
             map.put(this.getId(entity), entity);
         }
+        return entity;
     }
 
     @Override
