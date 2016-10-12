@@ -12,7 +12,10 @@ public class ApiArchitectureMain {
 
     private static Server server;
 
-    public static void request() {
+    public static void request(HttpMethod method, String path, String body) {
+        request.setMethod(method);
+        request.setPath(path);
+        request.setBody(body);
         System.out.println(request);
         HttpResponse response = server.request(request);
         System.out.println(response);
@@ -23,50 +26,20 @@ public class ApiArchitectureMain {
         server = new Server();
         DaoFactory.setFactory(new DaoFactoryMemory());
         request = new HttpRequest();
-
-        request.setMethod(HttpMethod.POST);
-        request.setPath("users");
-        request.setBody("uno:uno@gmail.com");
-        request();
-        request.setBody("dos:dos@gmail.com");
-        request();
-        request.setBody("uno:dos@gmail.com");
-        request();
-
-        request.setBody(null);
-        request.setMethod(HttpMethod.GET);
-        request.setPath("users");
-        request.clearQueryParams();
-        request();
-
-        request.setMethod(HttpMethod.POST);
-        request.setPath("sports");
-        request.setBody("tenis");
-        request();
-        request();
-        request.setBody("ajedrez");
-        request();
-
-        request.setMethod(HttpMethod.PUT);
-        request.setPath("users/uno/sport");
-        request.setBody("tenis");
-        request();
-        request.setBody("NoDeporte");
-        request();
-        request.setBody("tenis");
-        request();
-        request.setBody("ajedrez");
-        request();
-
-        request.setBody(null);
-        request.setMethod(HttpMethod.GET);
-        request.setPath("users/search");
+        request(HttpMethod.POST, "users", "uno:uno@gmail.com");
+        request(HttpMethod.POST, "users", "dos:dos@gmail.com");
+        request(HttpMethod.POST, "users", "uno:dos@gmail.com");
+        request(HttpMethod.GET, "users", null);
+        request(HttpMethod.POST, "sports", "tenis");
+        request(HttpMethod.POST, "sports", "tenis");
+        request(HttpMethod.POST, "sports", "ajedrez");
+        request(HttpMethod.PUT, "users/uno/sport", "tenis");
+        request(HttpMethod.PUT, "users/uno/sport", "noDeporte");
+        request(HttpMethod.PUT, "users/uno/sport", "tenis");
+        request(HttpMethod.PUT, "users/uno/sport", "ajedrez");
         request.addQueryParam("sport", "tenis");
-        request();
+        request(HttpMethod.GET, "users/search", null);
         request.clearQueryParams();
-
-        request.setMethod(HttpMethod.POST);
-        request.setPath("noPath");
-        request();
+        request(HttpMethod.POST, "noPath", null);
     }
 }
