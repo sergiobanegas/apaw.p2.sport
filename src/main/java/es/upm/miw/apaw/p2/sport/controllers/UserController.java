@@ -34,8 +34,7 @@ public class UserController {
     }
 
     public boolean userPracticesSport(String userNick, String sportName) {
-        User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
-        return user.hasSport(sportName);
+        return DaoFactory.getFactory().getUserDao().findUserByNick(userNick).hasSport(sportName);
     }
 
     public UserWrapper createUser(String userNick, String userEmail) {
@@ -54,7 +53,7 @@ public class UserController {
     public UserWrapper addUserSport(String userNick, String sportName) {
         User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
         SportWrapper sportWrapper = new SportController().findSportByName(sportName);
-        user.addSport(new Sport(sportWrapper.getId(), sportWrapper.getName()));// ERROR
+        user.addSport(new Sport(sportWrapper.getId(), sportWrapper.getName()));
         DaoFactory.getFactory().getUserDao().update(user);
         return createUserWrapper(user);
     }
