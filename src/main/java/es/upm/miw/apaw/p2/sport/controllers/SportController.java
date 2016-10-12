@@ -18,8 +18,9 @@ public class SportController {
         return sportListWrapper;
     }
 
-    public void createSport(String sportName) {
-        DaoFactory.getFactory().getSportDao().create(new Sport(sportName));
+    public SportWrapper createSport(String sportName) {
+        Sport sport = DaoFactory.getFactory().getSportDao().create(new Sport(sportName));
+        return new SportWrapper(sport.getId(), sport.getName());
     }
 
     public SportWrapper findSportByName(String sportName) {

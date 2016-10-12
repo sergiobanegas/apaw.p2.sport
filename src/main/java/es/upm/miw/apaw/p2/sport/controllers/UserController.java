@@ -1,10 +1,12 @@
 package es.upm.miw.apaw.p2.sport.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.upm.miw.apaw.p2.sport.daos.DaoFactory;
 import es.upm.miw.apaw.p2.sport.entities.Sport;
 import es.upm.miw.apaw.p2.sport.entities.User;
+import es.upm.miw.apaw.p2.sport.wrappers.SportWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserNickEmailListWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserNickEmailWrapper;
 import es.upm.miw.apaw.p2.sport.wrappers.UserNickListWrapper;
@@ -25,7 +27,7 @@ public class UserController {
     public UserWrapper findUserByNick(String userNick) {
         User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
         if (user != null) {
-            return new UserWrapper(user.getId(), user.getNick(), user.getEmail());
+            return createUserWrapper(user);
         } else {
             return null;
         }
@@ -36,8 +38,8 @@ public class UserController {
         return user.hasSport(sportName);
     }
 
-    public void createUser(String userNick, String userEmail) {
-        DaoFactory.getFactory().getUserDao().create(new User(userNick, userEmail));
+    public UserWrapper createUser(String userNick, String userEmail) {
+        return createUserWrapper(DaoFactory.getFactory().getUserDao().create(new User(userNick, userEmail)));
     }
 
     public UserNickListWrapper findUsersBySportName(String sportName) {
@@ -51,11 +53,18 @@ public class UserController {
 
     public UserWrapper addUserSport(String userNick, String sportName) {
         User user = DaoFactory.getFactory().getUserDao().findUserByNick(userNick);
-        if (user != null) {
-            user.addSport(new Sport(sportName));
-            DaoFactory.getFactory().getUserDao().update(user);
+        SportWrapper sportWrapper = new SportController().findSportByName(sportName);
+        user.addSport(new Sport(sportWrapper.getId(), sportWrapper.getName()));// ERROR
+        DaoFactory.getFactory().getUserDao().update(user);
+        return createUserWrapper(user);
+    }
+
+    private UserWrapper createUserWrapper(User user) {
+        List<SportWrapper> userSports = new ArrayList<SportWrapper>();
+        for (Sport sport : user.getSports()) {
+            userSports.add(new SportWrapper(sport.getId(), sport.getName()));
         }
-        return new UserWrapper(user.getId(), user.getNick(), user.getEmail());
+        return new UserWrapper(user.getId(), user.getNick(), user.getEmail(), userSports);
     }
 
 }

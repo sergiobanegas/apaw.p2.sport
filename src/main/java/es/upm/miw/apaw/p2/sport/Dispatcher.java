@@ -42,7 +42,7 @@ public class Dispatcher {
                 String userNick = request.getBody().split(":")[0];
                 String userEmail = request.getBody().split(":")[1];
                 try {
-                    userResource.createUser(userNick, userEmail);
+                    response.setBody(userResource.createUser(userNick, userEmail).toString());
                 } catch (Exception e) {
                     responseError(response, e);
                 }
@@ -53,7 +53,7 @@ public class Dispatcher {
             break;
         case "sports":
             try {
-                sportResource.createSport(request.getBody());
+                response.setBody(sportResource.createSport(request.getBody()).toString());
             } catch (Exception e) {
                 responseError(response, e);
             }
@@ -73,7 +73,7 @@ public class Dispatcher {
             case "users":
                 if ("sport".equals(request.paths()[2])) {
                     try {
-                        userResource.addUserSport(request.paths()[1], request.getBody());
+                        response.setBody(userResource.addUserSport(request.paths()[1], request.getBody()).toString());
                     } catch (Exception e) {
                         responseError(response, e);
                     }
